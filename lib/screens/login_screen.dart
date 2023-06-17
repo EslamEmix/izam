@@ -140,7 +140,6 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   _login(User user) async {
-    await _databaseHelper.getAllUsers();
     User? dbUser = await _databaseHelper.getUser(user.email, user.password);
     if (dbUser == null) {
       await _databaseHelper.addUser(user);
