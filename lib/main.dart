@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:izam_task/bloc/login/login_bloc.dart';
 import 'package:izam_task/helper/app_colors.dart';
 import 'package:izam_task/helper/app_theme.dart';
-import 'package:izam_task/helper/keys.dart';
 import 'package:izam_task/screens/login_screen.dart';
 
 void main() {
@@ -22,7 +23,9 @@ class _IzamAppState extends State<IzamApp> {
       theme: AppTheme.mainTheme,
       debugShowCheckedModeBanner: false,
       title: "Daftra",
-      home: const Scaffold(body: LoginScreen()),
+      home: BlocProvider(
+          create: (BuildContext context) => LoginBloc(),
+          child: const Scaffold(body: LoginScreen())),
     );
   }
 }

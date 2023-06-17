@@ -31,10 +31,15 @@ class DatabaseHelper {
     );
   }
 
-  Future<int> addUser(User user) async {
+  Future<User?> addUser(User user) async {
     final Database db = await database;
-    return await db.insert('users', user.toMap(),
+    int rowAffected = await db.insert('users', user.toMap(),
         conflictAlgorithm: ConflictAlgorithm.replace);
+    if (rowAffected > 0) {
+      return user;
+    } else {
+      return null;
+    }
   }
 
   Future<bool> updateUser(User user) async {
