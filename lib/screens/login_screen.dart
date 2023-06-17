@@ -18,6 +18,7 @@ class _LoginScreenState extends State<LoginScreen> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  final FocusNode _passwordFocusNode = FocusNode();
   final DatabaseHelper _databaseHelper = DatabaseHelper();
   final InputValidator _inputValidator = InputValidator();
 
@@ -29,7 +30,7 @@ class _LoginScreenState extends State<LoginScreen> {
         child: Container(
           width: MediaQuery.of(context).size.width,
           margin: const EdgeInsets.symmetric(horizontal: 20),
-          constraints: const BoxConstraints(maxWidth: 350),
+          constraints: const BoxConstraints(maxWidth: 350, maxHeight: 600),
           child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -42,7 +43,6 @@ class _LoginScreenState extends State<LoginScreen> {
                 Container(
                   width: double.infinity,
                   padding: const EdgeInsets.all(30),
-                  // constraints: const BoxConstraints(maxHeight: 450),
                   decoration: BoxDecoration(
                       boxShadow: [
                         BoxShadow(
@@ -76,16 +76,20 @@ class _LoginScreenState extends State<LoginScreen> {
                                     // to remove white space in email field
                                     _emailController.text =
                                         val.replaceAll(" ", "");
+                                    FocusScope.of(context)
+                                        .requestFocus(_passwordFocusNode);
                                   },
                                   validator: (val) =>
-                                      _inputValidator.isValidEmail(val),
+                                      _inputValidator.emailValidator(val),
                                 ),
                                 InputWidget(
                                   "Password",
+                                  focusNode: _passwordFocusNode,
                                   obscureText: true,
                                   textEditingController: _passwordController,
                                   validator: (val) =>
-                                      _inputValidator.isValidPassword(val),
+                                      _inputValidator.passwordValidator(val),
+                                  onFieldSubmitted: (val) => _submitLoginForm(),
                                 ),
                               ],
                             )),
@@ -127,14 +131,12 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   _submitLoginForm() {
-    print(_formKey.currentState!.validate());
     if (_formKey.currentState!.validate()) {
       _login(User(
           email: _emailController.text, password: _passwordController.text));
+    } else {
+      _failedLogin();
     }
-    // else {
-    //   _failedLogin();
-    // }
   }
 
   _login(User user) async {

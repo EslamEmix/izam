@@ -7,29 +7,29 @@ class InputValidator {
 
   InputValidator._();
 
-  String? isValidEmail(String? email) {
+  bool isValidMail(String email) => RegExp(_emailRegex).hasMatch(email);
+
+  bool isValidPassword(String password) =>
+      RegExp(_passwordRegex).hasMatch(password);
+
+  String? emailValidator(String? email) {
     if (email == null || email.isEmpty) {
       return "Please Enter your Email ";
     } else {
-      email.replaceAll(' ', '');
-      RegExp emailExp = RegExp(_emailRegex);
-      bool isValidMail = emailExp.hasMatch(email);
-      if (!isValidMail) {
+      if (!isValidMail(email)) {
         return "Please enter a valid mail";
       }
       return null;
     }
   }
 
-  String? isValidPassword(String? password) {
+  String? passwordValidator(String? password) {
     if (password == null || password.isEmpty) {
       return "Please Enter your password ";
     } else if (password.length < 8) {
       return "Password must be greater than 8 characters";
     } else {
-      RegExp passwordExp = RegExp(_passwordRegex);
-      bool isValidPassword = passwordExp.hasMatch(password);
-      if (!isValidPassword) {
+      if (!isValidPassword(password)) {
         return "Password must contain at least one number and one of the following symbols (!\$#^*)";
       }
       return null;

@@ -11,7 +11,7 @@ class InputWidget extends StatelessWidget {
   final String? Function(String? val)? validator;
   final Function(String val)? onChange;
   final Function(String val)? onFieldSubmitted;
-  final int? maxLines;
+  final FocusNode? focusNode;
 
   const InputWidget(
     this.hint, {
@@ -25,7 +25,7 @@ class InputWidget extends StatelessWidget {
     this.validator,
     this.onChange,
     this.onFieldSubmitted,
-    this.maxLines = 1,
+    this.focusNode,
   }) : super(key: key);
 
   @override
@@ -43,7 +43,7 @@ class InputWidget extends StatelessWidget {
           onTap: onTap,
           enabled: enabled,
           onFieldSubmitted: onFieldSubmitted,
-          maxLines: maxLines,
+          focusNode: focusNode,
           decoration: InputDecoration(
               filled: true,
               constraints: const BoxConstraints(maxWidth: 500),
